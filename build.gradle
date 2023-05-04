@@ -1,0 +1,134 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.6'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.graalvm.buildtools.native' version '0.9.20'
+	id 'org.springframework.cloud.contract' version '4.0.2'
+	id 'org.asciidoctor.convert' version '2.2.1'
+	id 'com.vaadin' version '24.0.5'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+	set('springCloudVersion', "2022.0.2")
+	set('springShellVersion', "3.0.2")
+	set('testcontainersVersion', "1.18.0")
+	set('vaadinVersion', "24.0.5")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation 'org.springframework.boot:spring-boot-starter-artemis'
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.springframework.boot:spring-boot-starter-data-ldap'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+	implementation 'org.springframework.boot:spring-boot-starter-graphql'
+	implementation 'org.springframework.boot:spring-boot-starter-groovy-templates'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.boot:spring-boot-starter-jersey'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	implementation 'org.springframework.boot:spring-boot-starter-rsocket'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'com.okta.spring:okta-spring-boot-starter:3.0.3'
+	implementation 'com.vaadin:vaadin-spring-boot-starter'
+	implementation 'info.picocli:picocli-spring-boot-starter:4.7.0'
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:4.0.0-M2'
+	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+	implementation 'org.springframework.integration:spring-integration-amqp'
+	implementation 'org.springframework.integration:spring-integration-http'
+	implementation 'org.springframework.integration:spring-integration-jms'
+	implementation 'org.springframework.integration:spring-integration-kafka'
+	implementation 'org.springframework.integration:spring-integration-mail'
+	implementation 'org.springframework.integration:spring-integration-rsocket'
+	implementation 'org.springframework.integration:spring-integration-security'
+	implementation 'org.springframework.integration:spring-integration-stomp'
+	implementation 'org.springframework.integration:spring-integration-webflux'
+	implementation 'org.springframework.integration:spring-integration-websocket'
+	implementation 'org.springframework.integration:spring-integration-ws'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.pulsar:spring-pulsar-reactive-spring-boot-starter:0.2.0'
+	implementation 'org.springframework.pulsar:spring-pulsar-spring-boot-starter:0.2.0'
+	implementation 'org.springframework.security:spring-security-messaging'
+	implementation 'org.springframework.security:spring-security-rsocket'
+	implementation 'org.springframework.session:spring-session-core'
+	implementation 'org.springframework.shell:spring-shell-starter'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'info.picocli:picocli-codegen:4.7.0'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'com.unboundid:unboundid-ldapsdk'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'io.rest-assured:spring-web-test-client'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+	testImplementation 'org.springframework.batch:spring-batch-test'
+	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+	testImplementation 'org.springframework.graphql:spring-graphql-test'
+	testImplementation 'org.springframework.integration:spring-integration-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:kafka'
+	testImplementation 'org.testcontainers:pulsar'
+	testImplementation 'org.testcontainers:rabbitmq'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.shell:spring-shell-dependencies:${springShellVersion}"
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('contractTest') {
+	useJUnitPlatform()
+}
+
+tasks.named('test') {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+contracts {
+	testMode = 'WebTestClient'
+}
+
